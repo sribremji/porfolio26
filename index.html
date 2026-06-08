@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Sribremji Mathiyalagan | Senior Software Engineer</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<style>
+:root {
+  --bg:#000; --surface:#080808; --card:#0f0f0f; --card2:#141414;
+  --border:#1c1c1e; --border2:#252528;
+  --accent:#0a84ff; --accent2:#30d158; --accent3:#ff9f0a; --accent4:#bf5af2;
+  --text:#f5f5f7; --muted:#86868b; --dim:#3a3a3c;
+  --highlight:#2997ff; --glow:rgba(10,132,255,.18);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Segoe UI',system-ui,sans-serif;overflow-x:hidden}
+
+/* ─── NAV ─────────────────────────────────── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:200;
+  height:48px;display:flex;align-items:center;justify-content:space-between;
+  padding:0 6%;
+  background:rgba(0,0,0,.75);backdrop-filter:saturate(180%) blur(24px);
+  border-bottom:1px solid var(--border);
+}
+.nav-logo{font-size:.88rem;font-weight:700;letter-spacing:.06em;color:var(--text)}
+.nav-links{display:flex;gap:1.8rem;list-style:none}
+.nav-links a{font-size:.8rem;color:var(--muted);text-decoration:none;transition:color .2s}
+.nav-links a:hover{color:var(--text)}
+.nav-badge{
+  font-size:.7rem;font-weight:600;padding:.2rem .7rem;border-radius:980px;
+  background:rgba(48,209,88,.12);border:1px solid rgba(48,209,88,.3);color:var(--accent2);
+}
+@media(max-width:680px){.nav-links{display:none}}
+
+/* ─── HERO ───────────────────────────────── */
+#hero{
+  min-height:100vh;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;text-align:center;
+  position:relative;overflow:hidden;padding:5rem 6% 4rem;
+}
+#particles-canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.glow-orb{
+  position:absolute;border-radius:50%;filter:blur(130px);pointer-events:none;
+}
+.hero-chip{
+  display:inline-flex;align-items:center;gap:.5rem;
+  font-size:.75rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--accent);border:1px solid rgba(10,132,255,.3);
+  padding:.35rem 1rem;border-radius:980px;
+  background:rgba(10,132,255,.08);
+  opacity:0;transform:translateY(16px);
+}
+.hero-name{
+  font-size:clamp(3rem,9vw,7.5rem);font-weight:800;letter-spacing:-.03em;line-height:1.02;
+  margin:.5em 0 .25em;
+  background:linear-gradient(140deg,#fff 40%,#2997ff 80%,#30d158 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  opacity:0;transform:translateY(36px);
+}
+.hero-title{
+  font-size:clamp(1rem,2.4vw,1.4rem);color:var(--muted);font-weight:400;
+  letter-spacing:.01em;line-height:1.5;max-width:640px;
+  opacity:0;transform:translateY(20px);
+}
+.hero-title strong{color:var(--text)}
+.hero-pills{
+  display:flex;gap:.6rem;flex-wrap:wrap;justify-content:center;margin-top:1.4rem;
+  opacity:0;
+}
+.pill{
+  font-size:.72rem;font-weight:600;padding:.3rem .9rem;border-radius:980px;
+  border:1px solid var(--border2);color:var(--muted);
+}
+.pill.java{border-color:rgba(255,159,10,.4);color:var(--accent3);background:rgba(255,159,10,.07)}
+.pill.aws{border-color:rgba(10,132,255,.4);color:var(--accent);background:rgba(10,132,255,.07)}
+.pill.devops{border-color:rgba(48,209,88,.4);color:var(--accent2);background:rgba(48,209,88,.07)}
+.hero-cta{
+  margin-top:2rem;display:flex;gap:.8rem;flex-wrap:wrap;justify-content:center;
+  opacity:0;transform:translateY(20px);
+}
+.btn{
+  padding:.72rem 1.8rem;border-radius:980px;font-size:.88rem;font-weight:600;
+  cursor:pointer;text-decoration:none;transition:all .25s;display:inline-block;border:none;
+}
+.btn-primary{background:var(--accent);color:#fff}
+.btn-primary:hover{background:#0077ed;transform:scale(1.05);box-shadow:0 8px 32px rgba(10,132,255,.4)}
+.btn-ghost{background:transparent;color:var(--text);border:1px solid var(--border2)}
+.btn-ghost:hover{border-color:var(--muted);transform:scale(1.04)}
+.scroll-cue{
+  position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:.4rem;opacity:0;
+}
+.scroll-cue span{font-size:.65rem;color:var(--dim);letter-spacing:.1em;text-transform:uppercase}
+.scroll-line{width:1px;height:44px;background:linear-gradient(to bottom,var(--muted),transparent);animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:.3;transform:scaleY(1)}50%{opacity:1;transform:scaleY(.65)}}
+
+/* ─── STATS BAND ─────────────────────────── */
+#stats{
+  background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border);
+  padding:3.5rem 6%;display:flex;justify-content:center;
+  gap:clamp(2rem,5vw,7rem);flex-wrap:wrap;
+}
+.stat{text-align:center}
+.stat-num{
+  font-size:clamp(2.2rem,4.5vw,3.6rem);font-weight:800;
+  background:linear-gradient(135deg,#fff,var(--highlight));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.stat-lbl{font-size:.78rem;color:var(--muted);margin-top:.25rem;letter-spacing:.02em}
+
+/* ─── SECTIONS ───────────────────────────── */
+section{padding:6rem 6%}
+.s-label{font-size:.72rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:.7rem}
+.s-title{font-size:clamp(2rem,4vw,3rem);font-weight:800;letter-spacing:-.02em;line-height:1.1;margin-bottom:.8rem}
+.s-sub{font-size:.95rem;color:var(--muted);line-height:1.6;max-width:560px}
+
+/* ─── MARQUEE ────────────────────────────── */
+.marquee-wrap{overflow:hidden;margin-top:2.5rem;mask-image:linear-gradient(to right,transparent,black 8%,black 92%,transparent)}
+.marquee-track{display:flex;gap:1rem;width:max-content;animation:mq 35s linear infinite}
+.marquee-track:hover{animation-play-state:paused}
+@keyframes mq{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.mq-item{
+  padding:.45rem 1.1rem;border-radius:980px;
+  background:var(--card);border:1px solid var(--border);
+  font-size:.75rem;color:var(--muted);white-space:nowrap;transition:all .2s;cursor:default;
+}
+.mq-item:hover{border-color:var(--highlight);color:var(--highlight)}
+
+/* ─── SKILLS ─────────────────────────────── */
+#skills{background:var(--surface)}
+.skills-universe{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:1px;margin-top:3rem;border:1px solid var(--border);border-radius:20px;overflow:hidden}
+.sk-cat{background:var(--card);padding:1.6rem 1.8rem;transition:background .3s}
+.sk-cat:hover{background:var(--card2)}
+.sk-icon{font-size:1.5rem;margin-bottom:.6rem}
+.sk-name{font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.7rem}
+.tags{display:flex;flex-wrap:wrap;gap:.35rem}
+.tag{
+  font-size:.7rem;font-weight:500;padding:.24rem .65rem;border-radius:980px;
+  border:1px solid var(--border);color:var(--muted);transition:all .2s;cursor:default;
+}
+.tag:hover{border-color:var(--highlight);color:var(--highlight);background:rgba(41,151,255,.06)}
+.tag.h{border-color:rgba(10,132,255,.5);color:var(--accent);background:rgba(10,132,255,.08)}
+.tag.g{border-color:rgba(48,209,88,.4);color:var(--accent2);background:rgba(48,209,88,.07)}
+
+/* ─── EXPERIENCE ─────────────────────────── */
+#experience{background:var(--bg)}
+.timeline{margin-top:3.5rem;position:relative;padding-left:1.5rem}
+.timeline::before{content:'';position:absolute;left:0;top:0;bottom:0;width:1px;background:linear-gradient(to bottom,var(--accent),var(--accent4),transparent)}
+.tlitem{
+  position:relative;margin-bottom:0;padding:0 0 4rem 2.5rem;
+  opacity:0;transform:translateX(-24px);
+}
+.tldot{
+  position:absolute;left:-5px;top:.6rem;
+  width:11px;height:11px;border-radius:50%;border:2px solid var(--bg);
+}
+.tlhead{display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:.4rem;margin-bottom:.6rem}
+.tlrole{font-size:1.1rem;font-weight:700;line-height:1.2}
+.tlco{
+  font-size:.78rem;font-weight:700;padding:.2rem .65rem;border-radius:6px;
+  letter-spacing:.02em;
+}
+.tldate{font-size:.75rem;color:var(--muted);margin-left:auto;padding-top:.1rem;white-space:nowrap}
+.tl-flow{
+  background:var(--card);border:1px solid var(--border);border-radius:12px;
+  padding:1rem 1.2rem;margin:.8rem 0;
+  font-size:.78rem;color:var(--muted);line-height:1.8;
+}
+.tl-flow-title{font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem}
+.tl-flow-chain{display:flex;align-items:center;flex-wrap:wrap;gap:.3rem;margin-bottom:.5rem}
+.fc-node{
+  font-size:.7rem;font-weight:600;padding:.22rem .7rem;border-radius:6px;
+  background:var(--card2);border:1px solid var(--border2);color:var(--muted);white-space:nowrap;
+}
+.fc-arrow{color:var(--dim);font-size:.9rem}
+.tlbullets{list-style:none;margin-top:.8rem}
+.tlbullets li{
+  font-size:.85rem;color:var(--muted);line-height:1.65;
+  padding:.28rem 0 .28rem 1.3rem;position:relative;
+}
+.tlbullets li::before{content:'›';position:absolute;left:0;font-weight:700}
+.tlchips{display:flex;gap:.4rem;flex-wrap:wrap;margin-top:.9rem}
+.chip{
+  font-size:.67rem;font-weight:600;padding:.18rem .6rem;border-radius:980px;
+  border:1px solid;white-space:nowrap;
+}
+
+/* ─── ACHIEVEMENTS ───────────────────────── */
+#achievements{background:var(--surface)}
+.ach-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:1.2rem;margin-top:2.8rem}
+.ach-card{
+  background:var(--card);border:1px solid var(--border);border-radius:18px;
+  padding:1.8rem;cursor:default;
+  opacity:0;transform:translateY(36px);
+  transition:transform .35s,box-shadow .35s,border-color .35s;
+}
+.ach-card:hover{transform:translateY(-4px);box-shadow:0 24px 60px rgba(0,0,0,.6);border-color:var(--highlight)}
+.ach-num{
+  font-size:2.4rem;font-weight:800;
+  background:linear-gradient(135deg,var(--accent3),#ff6b35);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  margin-bottom:.3rem;
+}
+.ach-lbl{font-size:.95rem;font-weight:700;margin-bottom:.35rem}
+.ach-desc{font-size:.78rem;color:var(--muted);line-height:1.55}
+
+/* ─── WHY HIRE ME ────────────────────────── */
+#whyhire{background:var(--bg)}
+.whyhire-intro{
+  max-width:700px;font-size:1rem;color:var(--muted);line-height:1.75;margin-bottom:3rem;
+}
+.whyhire-intro strong{color:var(--text)}
+.whyhire-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
+  gap:1px;border:1px solid var(--border);border-radius:22px;overflow:hidden;
+  margin-bottom:3.5rem;
+}
+.wh-card{
+  background:var(--card);padding:2rem 2.2rem;
+  transition:background .3s,box-shadow .3s;
+  opacity:0;transform:translateY(28px);cursor:default;
+  position:relative;overflow:hidden;
+}
+.wh-card::before{
+  content:'';position:absolute;inset:0;opacity:0;transition:opacity .4s;
+  background:linear-gradient(135deg,var(--wh-color,var(--accent)) 0%,transparent 60%);
+}
+.wh-card:hover{background:var(--card2)}
+.wh-card:hover::before{opacity:.06}
+.wh-num{
+  font-size:.65rem;font-weight:800;letter-spacing:.14em;
+  color:var(--wh-color,var(--accent));margin-bottom:.9rem;
+  text-transform:uppercase;
+}
+.wh-title{
+  font-size:1.05rem;font-weight:700;margin-bottom:.6rem;line-height:1.3;
+}
+.wh-body{font-size:.82rem;color:var(--muted);line-height:1.7}
+.wh-body strong{color:var(--text);font-weight:600}
+.wh-proof{
+  display:inline-block;margin-top:.9rem;
+  font-size:.7rem;font-weight:700;letter-spacing:.06em;
+  padding:.22rem .7rem;border-radius:6px;
+  background:rgba(255,255,255,.04);border:1px solid var(--border2);
+  color:var(--muted);
+}
+
+/* recruiter CTA strip */
+.hire-cta-strip{
+  background:linear-gradient(135deg,rgba(10,132,255,.12),rgba(48,209,88,.08));
+  border:1px solid rgba(10,132,255,.25);border-radius:18px;
+  padding:2.4rem 2.8rem;display:flex;
+  align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1.5rem;
+}
+.hire-cta-copy{}
+.hire-cta-copy h3{font-size:1.3rem;font-weight:700;margin-bottom:.4rem}
+.hire-cta-copy p{font-size:.85rem;color:var(--muted);max-width:480px;line-height:1.6}
+.hire-cta-actions{display:flex;gap:.8rem;flex-wrap:wrap}
+
+/* ─── CERTS ──────────────────────────────── */
+#certifications{background:var(--surface)}
+.certs-row{display:flex;gap:1.2rem;flex-wrap:wrap;margin-top:2.5rem}
+.cert-card{
+  background:var(--card);border:1px solid var(--border);border-radius:14px;
+  padding:1.4rem 1.6rem;flex:1;min-width:230px;
+  display:flex;align-items:center;gap:1rem;
+  transition:all .3s;opacity:0;transform:scale(.9);cursor:default;
+}
+.cert-card:hover{border-color:var(--accent3);box-shadow:0 0 32px rgba(255,159,10,.15)}
+.cert-ic{
+  font-size:.7rem;font-weight:800;letter-spacing:.04em;
+  width:36px;height:36px;border-radius:10px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  background:rgba(255,159,10,.12);border:1px solid rgba(255,159,10,.3);
+  color:var(--accent3);
+}
+.sk-icon:empty{display:none}
+.cert-title{font-size:.88rem;font-weight:700;margin-bottom:.2rem}
+.cert-sub{font-size:.72rem;color:var(--muted)}
+
+/* ─── CONTACT ────────────────────────────── */
+#contact{background:var(--surface);text-align:center}
+.contact-box{
+  max-width:660px;margin:2.5rem auto 0;
+  background:var(--card);border:1px solid var(--border);border-radius:22px;
+  padding:3rem 2.5rem;
+  opacity:0;transform:translateY(36px);
+}
+.contact-links{display:flex;justify-content:center;gap:1rem;flex-wrap:wrap;margin-top:2rem}
+.clink{
+  display:flex;align-items:center;gap:.45rem;font-size:.82rem;color:var(--muted);
+  text-decoration:none;padding:.55rem 1.1rem;border-radius:980px;
+  border:1px solid var(--border);transition:all .2s;
+}
+.clink:hover{border-color:var(--highlight);color:var(--highlight)}
+.eu-badge{
+  display:inline-block;margin-top:1.4rem;padding:.35rem 1.1rem;border-radius:980px;
+  background:rgba(48,209,88,.1);border:1px solid rgba(48,209,88,.3);
+  font-size:.78rem;color:var(--accent2);
+}
+
+/* ─── REVEAL BASE ────────────────────────── */
+.reveal{opacity:0;transform:translateY(36px);transition:opacity .75s ease,transform .75s ease}
+.reveal.vis{opacity:1;transform:none}
+
+/* ─── FOOTER ─────────────────────────────── */
+footer{padding:1.8rem 6%;text-align:center;border-top:1px solid var(--border);font-size:.72rem;color:var(--dim)}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <span class="nav-logo">Sribremji M.</span>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#achievements">Impact</a></li>
+    <li><a href="#whyhire">Why Me</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <span class="nav-badge">Open to Europe</span>
+</nav>
+
+<!-- ── HERO ── -->
+<section id="hero">
+  <canvas id="particles-canvas"></canvas>
+  <div class="glow-orb" style="width:700px;height:700px;background:#0a84ff;top:-280px;left:-180px;opacity:.12"></div>
+  <div class="glow-orb" style="width:500px;height:500px;background:#30d158;bottom:-150px;right:-80px;opacity:.1"></div>
+  <div class="glow-orb" style="width:400px;height:400px;background:#bf5af2;top:40%;left:60%;opacity:.07"></div>
+
+  <div class="hero-chip">Senior Software Engineer · 9+ Years</div>
+  <h1 class="hero-name">Sribremji<br/>Mathiyalagan</h1>
+  <p class="hero-title">
+    <strong>Java · Spring Boot · Microservices</strong> &nbsp;|&nbsp; AWS Cloud-Native · Kubernetes · DevOps
+  </p>
+  <div class="hero-pills">
+    <span class="pill java">Java 8 / 11 / 17</span>
+    <span class="pill aws">AWS Certified ×3</span>
+    <span class="pill devops">DevOps · GitOps · IaC</span>
+    <span class="pill" style="border-color:rgba(191,90,242,.4);color:#bf5af2;background:rgba(191,90,242,.07)">Puducherry → Europe</span>
+  </div>
+  <div class="hero-cta">
+    <a href="#contact" class="btn btn-primary">Get in Touch</a>
+    <a href="#experience" class="btn btn-ghost">View Work</a>
+  </div>
+  <div class="scroll-cue"><div class="scroll-line"></div><span>Scroll</span></div>
+</section>
+
+<!-- ── STATS ── -->
+<div id="stats">
+  <div class="stat reveal"><div class="stat-num" data-to="9" data-sfx="+">0</div><div class="stat-lbl">Years of Experience</div></div>
+  <div class="stat reveal"><div class="stat-num" data-to="10" data-sfx="M+ Events/Day">0</div><div class="stat-lbl">Daily Events Processed</div></div>
+  <div class="stat reveal"><div class="stat-num" data-to="4" data-sfx=" Companies">0</div><div class="stat-lbl">Enterprise Employers</div></div>
+  <div class="stat reveal"><div class="stat-num" data-to="3" data-sfx=" AWS Certs">0</div><div class="stat-lbl">AWS Certifications</div></div>
+  <div class="stat reveal"><div class="stat-num" data-to="90" data-sfx="%+ TDD">0</div><div class="stat-lbl">Test Coverage Achieved</div></div>
+</div>
+
+<!-- ── ABOUT ── -->
+<section id="about">
+  <div class="s-label">About</div>
+  <h2 class="s-title reveal">Engineering at scale.<br/>Java at the core, Cloud everywhere.</h2>
+  <p class="s-sub reveal" style="transition-delay:.1s">
+    Senior Software Engineer with 9+ years delivering <strong style="color:var(--text)">production-grade Java microservices</strong> on AWS,
+    building event-driven platforms, fintech card systems, streaming pipelines, and multi-cloud DevOps automation.
+    From writing clean Spring Boot code to wiring Terraform modules and Kubernetes clusters, I own the full delivery lifecycle.
+  </p>
+  <div class="marquee-wrap reveal" style="transition-delay:.2s"><div class="marquee-track" id="mq"></div></div>
+</section>
+
+<!-- ── SKILLS ── -->
+<section id="skills">
+  <div class="s-label">Tech Stack</div>
+  <h2 class="s-title reveal">Every layer of the stack.</h2>
+  <p class="s-sub reveal" style="transition-delay:.1s">From JVM internals to Kubernetes operators, Terraform modules to Kafka consumers. All built for production.</p>
+  <div class="skills-universe reveal" id="skills-grid" style="transition-delay:.2s"></div>
+</section>
+
+<!-- ── EXPERIENCE ── -->
+<section id="experience">
+  <div class="s-label">Experience</div>
+  <h2 class="s-title reveal">Where I built things<br/>that matter.</h2>
+  <div class="timeline" id="timeline"></div>
+</section>
+
+<!-- ── ACHIEVEMENTS ── -->
+<section id="achievements">
+  <div class="s-label">Impact</div>
+  <h2 class="s-title reveal">Numbers that speak.</h2>
+  <div class="ach-grid" id="ach-grid"></div>
+</section>
+
+<!-- ── WHY HIRE ME ── -->
+<section id="whyhire">
+  <div class="s-label">Why Hire Me</div>
+  <h2 class="s-title reveal">What sets me apart.</h2>
+  <p class="whyhire-intro reveal" style="transition-delay:.1s">
+    Nine years of shipping <strong>Java microservices to production at enterprise scale</strong>, owning systems end-to-end: architecture, infrastructure, CI/CD, observability, and security. Here is why that matters for your team.
+  </p>
+  <div class="whyhire-grid" id="whyhire-grid"></div>
+
+  <div class="hire-cta-strip reveal">
+    <div class="hire-cta-copy">
+      <h3>Ready to contribute from day one.</h3>
+      <p>Senior Software Engineer · Platform Engineer · DevOps Engineer across fintech, media, and telecom domains. Available for roles across Europe.</p>
+    </div>
+    <div class="hire-cta-actions">
+      <a href="mailto:sribremji1994@gmail.com" class="btn btn-primary">Email Me</a>
+      <a href="https://linkedin.com/in/sribremji" target="_blank" class="btn btn-ghost">LinkedIn</a>
+    </div>
+  </div>
+</section>
+
+<!-- ── CERTS ── -->
+<section id="certifications">
+  <div class="s-label">Certifications</div>
+  <h2 class="s-title reveal">AWS Certified. Three times over.</h2>
+  <div class="certs-row" id="certs-row"></div>
+</section>
+
+<!-- ── CONTACT ── -->
+<section id="contact">
+  <div class="s-label">Let's Connect</div>
+  <h2 class="s-title reveal">Open to Senior &amp; Lead roles<br/>across Europe.</h2>
+  <div class="contact-box reveal" style="transition-delay:.1s">
+    <p style="color:var(--muted);font-size:.9rem;line-height:1.7">
+      Actively seeking <strong style="color:var(--text)">Senior Software Engineer · Platform Engineer · DevOps Engineer</strong> opportunities in Europe.
+      Experienced in fintech, media, and telecom domains, ready to contribute from day one.
+    </p>
+    <div class="contact-links">
+      <a href="mailto:sribremji1994@gmail.com" class="clink">sribremji1994@gmail.com</a>
+      <a href="https://linkedin.com/in/sribremji" target="_blank" class="clink">linkedin.com/in/sribremji</a>
+      <a href="tel:+919500456828" class="clink">+91-9500456828</a>
+    </div>
+    <div class="eu-badge">Open to relocation across Europe</div>
+  </div>
+</section>
+
+<footer>© 2025 Sribremji Mathiyalagan · Puducherry, India · Building distributed systems at scale</footer>
+
+<script>
+// ═══════════════════ DATA ════════════════════════════════════════════════
+
+const SKILLS = [
+  {
+    icon:'', name:'Java Engineering (Core)',
+    tags:['Java 8','Java 11','Java 17','OOP / SOLID','Collections & Streams','Concurrency','JVM Tuning','Generics','Reflection'],
+    h:['Java 8','Java 11','Java 17']
+  },
+  {
+    icon:'', name:'Spring Ecosystem',
+    tags:['Spring Boot','Spring MVC','Spring Security','Spring Data JPA','Spring Cloud','Spring Cloud Gateway','Spring Batch','Hibernate','JPA','Lombok','MapStruct'],
+    h:['Spring Boot','Spring Cloud']
+  },
+  {
+    icon:'', name:'APIs & Architecture Patterns',
+    tags:['REST APIs','GraphQL','OpenAPI 3.0','Microservices','CQRS','Event Sourcing','Saga Pattern','Outbox Pattern','Hexagonal Architecture','DDD','API-First'],
+    h:['REST APIs','Microservices','CQRS']
+  },
+  {
+    icon:'', name:'AWS Cloud (Core)',
+    tags:['Lambda','API Gateway','DynamoDB','S3','ECS','ECR','Fargate','EventBridge','SQS','SNS','CloudFront','SageMaker','RDS','ElastiCache'],
+    h:['Lambda','DynamoDB','ECS']
+  },
+  {
+    icon:'', name:'AWS Security & Networking',
+    tags:['IAM','Secrets Manager','VPC','Route 53','WAF','KMS','AWS Shield','CloudTrail','Security Hub','GuardDuty','Cognito'],
+    h:['IAM','Secrets Manager']
+  },
+  {
+    icon:'', name:'Infrastructure as Code',
+    tags:['Terraform','AWS CDK','CloudFormation','Helm','Ansible','Pulumi'],
+    h:['Terraform','AWS CDK']
+  },
+  {
+    icon:'', name:'Containers & Orchestration',
+    tags:['Docker','Kubernetes (EKS)','Helm Charts','Docker Compose','Kustomize','Service Mesh (Istio)','Pod Autoscaling','RBAC'],
+    h:['Kubernetes (EKS)','Docker']
+  },
+  {
+    icon:'', name:'Messaging & Streaming',
+    tags:['Apache Kafka','AWS EventBridge','SQS','SNS','RabbitMQ','Kafka Streams','Dead Letter Queues','Event-Driven Architecture'],
+    h:['Apache Kafka','Kafka Streams']
+  },
+  {
+    icon:'', name:'Databases',
+    tags:['DynamoDB','PostgreSQL','MySQL','Oracle','Elasticsearch','Redis','MongoDB','ElastiCache','Connection Pooling'],
+    h:['DynamoDB','PostgreSQL']
+  },
+  {
+    icon:'', name:'CI/CD & DevOps',
+    tags:['GitHub Actions','Jenkins','AWS CodePipeline','CodeBuild','ArgoCD','GitLab CI','GitOps','Blue-Green Deploy','Canary Deploy','Feature Flags','SonarQube','Nexus','Artifactory'],
+    h:['GitHub Actions','ArgoCD']
+  },
+  {
+    icon:'', name:'Secrets & Security',
+    tags:['HashiCorp Vault','AWS Secrets Manager','Spring Security','OAuth2','JWT','PKCE','mTLS','OWASP','Trivy','DevSecOps','Zero Trust'],
+    h:['HashiCorp Vault','OAuth2','JWT']
+  },
+  {
+    icon:'', name:'Observability & Monitoring',
+    tags:['AWS CloudWatch','Datadog','Prometheus','Grafana','ELK Stack','Splunk','Jaeger','Distributed Tracing','APM','SLO/SLA','Alerting'],
+    h:['Datadog','Prometheus']
+  },
+  {
+    icon:'', name:'Testing & Quality',
+    tags:['JUnit 5','Mockito','TestContainers','Contract Testing (Pact)','WireMock','Integration Testing','Performance Testing','Load Testing','TDD','BDD'],
+    h:['JUnit 5','TDD','TestContainers']
+  },
+  {
+    icon:'', name:'Build & Tooling',
+    tags:['Maven','Gradle','Bash Scripting','Python','Groovy','Linux (Ubuntu / Amazon Linux)','Git','GitHub','GitLab','Bitbucket'],
+    h:['Maven','Gradle']
+  },
+];
+
+const EXPERIENCE = [
+  {
+    role:'Senior Software Development Specialist',
+    company:'LTIMindtree',
+    date:'Sep 2024 – Present',
+    domain:'Fintech · Debit Card Platform',
+    color:'#0a84ff',
+    flow:{
+      title:'Debit Card Platform: API and AWS Architecture Flow',
+      chain:[
+        'Mobile / Web Client','→','AWS API Gateway','→','Spring Boot Microservices (Java 17)','→',
+        'Card Issuance Service','→','DynamoDB (Card Store)','→','EventBridge','→','SQS','→','Notification / Fraud Services'
+      ]
+    },
+    bullets:[
+      'Architected and built a <strong>Debit Card Platform</strong> on AWS using Java 17 + Spring Boot, RESTful APIs for full card lifecycle management deployed on ECS Fargate behind API Gateway.',
+      '<strong>Card Issuance API</strong>, POST /v1/cards: provisions virtual/physical debit cards, generates encrypted card numbers via AWS KMS, stores card metadata in DynamoDB, triggers EventBridge event to downstream card network.',
+      '<strong>Card Management APIs</strong>, PATCH /v1/cards/{id}/lock · /unlock · /change-pin · /status: card lock/unlock with instant DynamoDB state update + SQS event for real-time card network sync; PIN change with Spring Security encrypted storage.',
+      '<strong>Transaction Authorization</strong>, sub-50ms real-time authorisation engine using Lambda@Edge + DynamoDB conditional writes; built fraud-signal fan-out via EventBridge rule-based routing to 5+ downstream consumer services.',
+      'Implemented <strong>Transactional Outbox Pattern</strong> on DynamoDB streams → EventBridge for exactly-once card event delivery, eliminating duplicate card activations under high load.',
+      'Designed multi-account AWS infrastructure with Terraform + AWS CDK, dev/staging/prod isolation, automated drift detection, Secrets Manager for all card credentials and KMS keys.',
+      'CI/CD via GitHub Actions + ArgoCD on Amazon EKS, zero-downtime blue-green deployments; release cycle cut from 2 days to 4 hours.',
+      'Enforced OAuth2/JWT + Spring Security, AWS IAM least-privilege, WAF rules, zero critical security findings in quarterly audits.',
+    ],
+    chips:['Java 17','Spring Boot','AWS API Gateway','ECS Fargate','DynamoDB','EventBridge','SQS','KMS','Terraform','AWS CDK','Kubernetes','ArgoCD','Spring Security','OAuth2/JWT'],
+    chipColor:'rgba(10,132,255,.15)',chipBorder:'rgba(10,132,255,.5)'
+  },
+  {
+    role:'Senior Software Engineer',
+    company:'Genesys',
+    date:'Jan 2024 – Sep 2024',
+    domain:'Customer Experience (CX) Platform',
+    color:'#30d158',
+    flow:{
+      title:'CX Platform: Java Microservices on AWS',
+      chain:[
+        'CX Event Source','→','Apache Kafka (Streams)','→','Java Spring Boot Services','→','AWS ECS','→','RDS PostgreSQL + ElastiCache','→','CloudFront / API Gateway','→','Enterprise Clients'
+      ]
+    },
+    bullets:[
+      'Developed <strong>cloud-native backend microservices in Java + Spring Boot on AWS</strong> for Genesys CX platform, API throughput improved 35%, average response time under 80ms.',
+      'Built real-time <strong>Kafka event streaming pipelines</strong> with Java Kafka Streams API; schema evolution managed via Confluent Schema Registry, serving enterprise CX workflows globally.',
+      'Authored reusable <strong>Terraform modules for AWS infrastructure</strong> (ECS, RDS PostgreSQL, ElastiCache Redis, VPC, ALB) across multiple regions, provisioning time reduced by 70%.',
+      'Designed and documented <strong>OpenAPI 3.0 contract-first REST APIs</strong>, improved cross-team integration reliability and reduced integration bugs by 45%.',
+      'Established observability with <strong>Datadog APM, distributed tracing, and CloudWatch alarms</strong>, reduced MTTR by 40%; defined SLOs for all critical CX services.',
+      'Led Agile/Scrum ceremonies, sprint planning, architecture design reviews, and technical RFCs for distributed teams across time zones.',
+    ],
+    chips:['Java','Spring Boot','Apache Kafka','Kafka Streams','AWS ECS','RDS PostgreSQL','ElastiCache','Terraform','Datadog','CloudWatch','OpenAPI 3.0'],
+    chipColor:'rgba(48,209,88,.1)',chipBorder:'rgba(48,209,88,.4)'
+  },
+  {
+    role:'Senior Software Engineer',
+    company:'Comcast',
+    date:'Jan 2019 – Jan 2024',
+    domain:'Media · Content Delivery Platform',
+    color:'#ff9f0a',
+    flow:{
+      title:'Content Delivery + Secrets Migration Flow',
+      chain:[
+        'Content Producers','→','EventBridge (Custom Bus)','→','5-Lambda Chain (Java)','→','SQS Fan-out','→','8+ Consumer Services','→','CloudFront CDN + SageMaker','→','End Users'
+      ]
+    },
+    bullets:[
+      '<strong>Content Delivery Architecture</strong>: designed 5-Lambda event-driven pipeline in Java processing 10M+ daily events via AWS EventBridge, SQS, Elasticsearch, CloudFront CDN, and SageMaker ML inference.',
+      '<strong>Secrets Migration: AWS Secrets Manager → HashiCorp Vault</strong>: led full migration of all application secrets, API keys, DB credentials, and TLS certificates from AWS Secrets Manager to HashiCorp Vault for vendor-neutral multi-cloud governance. Updated all Java Spring Boot services to use Vault Java SDK + Spring Cloud Vault; implemented Vault dynamic secrets for DB credentials with auto-rotation; configured Vault AppRole authentication for all ECS workloads; reduced secret sprawl from 200+ manual secrets to 40 centrally governed Vault paths.',
+      'Implemented <strong>Transactional Outbox Pattern</strong> in Java for exactly-once event delivery across distributed microservices, zero data loss over 3 years in production.',
+      'Engineered <strong>EventBridge rule-based fan-out</strong> decoupling content producers from 8+ downstream Java consumer services, improved system resilience and independent deployability.',
+      'Built high-throughput <strong>content metadata REST API in Spring Boot</strong>, 5M+ daily requests, p99 latency under 100ms, DynamoDB + ElastiCache Redis caching layer.',
+      'Automated all <strong>AWS infrastructure with Terraform</strong>, reduced provisioning from 3 days to 2 hours; all infra version-controlled in Git.',
+      'Integrated <strong>SageMaker ML-based content recommendation</strong> models into Java event pipeline, improved content engagement metrics by 18%.',
+      'Led architecture design sessions; established microservices coding standards adopted org-wide across 4 teams; championed TDD with 90%+ JUnit 5/Mockito coverage.',
+    ],
+    chips:['Java','Spring Boot','AWS Lambda','EventBridge','SQS','DynamoDB','ElastiCache','HashiCorp Vault','Spring Cloud Vault','SageMaker','Terraform','CloudFront','Elasticsearch'],
+    chipColor:'rgba(255,159,10,.1)',chipBorder:'rgba(255,159,10,.4)'
+  },
+  {
+    role:'Software Engineer, DevOps',
+    company:'TCS (T-Mobile)',
+    date:'Jan 2016 – Jan 2019',
+    domain:'Telecom · T-Mobile US',
+    color:'#bf5af2',
+    flow:{
+      title:'T-Mobile DevOps Pipeline: End to End',
+      chain:[
+        'Java Spring Boot Services','→','GitHub / Bitbucket','→','Jenkins CI','→','SonarQube + OWASP','→','Docker Build','→','AWS ECR','→','ECS / EC2 Deploy','→','CloudWatch Monitoring'
+      ]
+    },
+    bullets:[
+      '<strong>T-Mobile DevOps Engineer</strong>: owned end-to-end CI/CD pipeline automation for telecom backend services on AWS, enabled continuous delivery for 6+ Java microservice teams.',
+      'Developed <strong>Java + Spring Boot backend services</strong> for T-Mobile enterprise systems, RESTful APIs for subscriber management, provisioning, and billing integrations backed by Oracle and MySQL via JPA/Hibernate.',
+      'Built and maintained <strong>Jenkins CI/CD pipelines</strong> using Groovy DSL, automated build, test, static analysis (SonarQube), Docker image build + push to AWS ECR, and deployment to AWS ECS; reduced manual release effort by 60%.',
+      'Authored <strong>Bash and Python automation scripts</strong> for infrastructure health checks, log aggregation, and environment setup, cut environment provisioning time significantly.',
+      'Containerised all Java services using <strong>Docker + AWS ECS</strong>, standardised deployment across dev, staging, and prod environments; wrote Docker Compose configs for local development parity.',
+      '<strong>AWS infrastructure management</strong>: provisioned and maintained EC2, ECS, S3, RDS, IAM roles/policies, VPC networking, and CloudWatch alarms for T-Mobile backend workloads.',
+      'Integrated <strong>OWASP dependency-check and SonarQube</strong> into Jenkins pipelines for automated security scanning and code quality gates.',
+      'Refactored legacy monolithic Java applications into modular Spring Boot microservices, improved maintainability, deployment safety, and team autonomy.',
+    ],
+    chips:['Java','Spring Boot','Jenkins (Groovy DSL)','Docker','AWS ECS','AWS ECR','AWS EC2','S3','RDS','CloudWatch','SonarQube','OWASP','Bash','Python'],
+    chipColor:'rgba(191,90,242,.1)',chipBorder:'rgba(191,90,242,.4)'
+  }
+];
+
+const ACHIEVEMENTS = [
+  {num:'10M+', lbl:'Daily Events Processed', desc:'Event-driven Java/Lambda platform at Comcast, zero data loss across 3 years of production operation.'},
+  {num:'95%', lbl:'Infra Provisioning Faster', desc:'3 days → 2 hours via Terraform automation at Comcast and Genesys.'},
+  {num:'4 hrs', lbl:'CI/CD Release Cycle', desc:'Cut from 2 days to 4 hours via GitOps ArgoCD pipelines at LTIMindtree.'},
+  {num:'35%', lbl:'API Throughput Improved', desc:'Spring Boot microservices optimisation + observability at Genesys CX platform.'},
+  {num:'40%', lbl:'MTTR Reduction', desc:'Datadog APM dashboards, distributed tracing, and CloudWatch SLOs at Genesys.'},
+  {num:'90%+', lbl:'Unit Test Coverage', desc:'TDD with JUnit 5, Mockito, TestContainers across all Java microservices.'},
+  {num:'200+', lbl:'Secrets Migrated', desc:'Full HashiCorp Vault migration from AWS Secrets Manager at Comcast, 200 secrets to 40 governed Vault paths.'},
+  {num:'30%', lbl:'Team Velocity Boost', desc:'Agentic AI tooling for test generation, code review automation, and IaC scaffolding at LTIMindtree.'},
+];
+
+const WHYHIRE = [
+  {
+    num:'01',
+    color:'#0a84ff',
+    title:'Production-proven at enterprise scale',
+    body:'I have designed and operated distributed systems processing <strong>10M+ daily events</strong> at Comcast for five years, with zero data loss. At Genesys I drove API throughput up 35% and cut MTTR by 40%. These are not side projects. They are production systems serving millions of real users.',
+    proof:'10M+ events/day · Zero data loss · 3 years production',
+  },
+  {
+    num:'02',
+    color:'#30d158',
+    title:'I own the full delivery lifecycle',
+    body:'Most engineers write code and hand off. I go further, I architect the system, write the Java services, provision the AWS infrastructure with Terraform, wire up the CI/CD pipeline with GitHub Actions and ArgoCD, instrument with Datadog, and harden with Spring Security and HashiCorp Vault. <strong>One engineer doing the work of a team.</strong>',
+    proof:'Code → Infra → CI/CD → Observability → Security',
+  },
+  {
+    num:'03',
+    color:'#ff9f0a',
+    title:'Deep Java expertise, beyond annotations',
+    body:'Nine years of Java across versions 8, 11, and 17. I understand JVM internals, concurrency models, GC tuning, and memory management, not just Spring Boot annotations. I write <strong>clean, testable, maintainable code</strong> with TDD, achieving 90%+ unit test coverage across all projects using JUnit 5, Mockito, and TestContainers.',
+    proof:'Java 8/11/17 · TDD · 90%+ test coverage',
+  },
+  {
+    num:'04',
+    color:'#bf5af2',
+    title:'AWS depth across the full cloud stack',
+    body:'Three AWS certifications and <strong>hands-on experience with 15+ AWS services</strong>, Lambda, ECS Fargate, DynamoDB, EventBridge, SQS, API Gateway, SageMaker, KMS, IAM, and more. I have built serverless platforms, multi-region Terraform-provisioned infrastructure, and ML-integrated event pipelines, all in production.',
+    proof:'AWS Solutions Architect · Developer · Cloud Practitioner',
+  },
+  {
+    num:'05',
+    color:'#ff453a',
+    title:'Cross-domain experience: fintech, media, telecom',
+    body:'Debit card platforms at <strong>LTIMindtree</strong>. Content delivery at <strong>Comcast</strong>. Customer experience at <strong>Genesys</strong>. DevOps pipelines for <strong>T-Mobile at TCS</strong>. Each domain brought different scale challenges, compliance requirements, and architecture decisions. I adapt fast and deliver regardless of the domain.',
+    proof:'Fintech · Media · CX · Telecom',
+  },
+  {
+    num:'06',
+    color:'#ffd60a',
+    title:'Security is built in, not bolted on',
+    body:'I led the migration of <strong>200+ secrets from AWS Secrets Manager to HashiCorp Vault</strong> at Comcast, centralised governance, dynamic DB credentials, and AppRole authentication across all ECS workloads. I apply <strong>zero-trust principles</strong>, OAuth2/JWT, AWS IAM least-privilege, and DevSecOps practices, achieving zero critical security findings across all quarterly audits.',
+    proof:'HashiCorp Vault · OAuth2/JWT · Zero critical findings',
+  },
+  {
+    num:'07',
+    color:'#0a84ff',
+    title:'DevOps is a first-class skill, not an afterthought',
+    body:'I built complete DevOps pipelines from scratch for T-Mobile at TCS using Jenkins, Docker, and AWS ECS. At LTIMindtree I implemented <strong>GitOps with ArgoCD on Amazon EKS</strong>, achieving zero-downtime blue-green deployments and cutting release cycles from 2 days to 4 hours. Infrastructure is code. Deployments are automated. Rollbacks are instant.',
+    proof:'ArgoCD · GitOps · Zero-downtime deploys · 4-hour releases',
+  },
+  {
+    num:'08',
+    color:'#30d158',
+    title:'I raise the bar for the whole team',
+    body:'At Comcast I led architecture sessions whose patterns were <strong>adopted org-wide across 4 teams</strong>. At LTIMindtree I mentored junior and senior engineers on cloud-native patterns and IaC tooling. I integrate agentic AI tooling into developer workflows, boosting team velocity by 30%. I make everyone around me more effective.',
+    proof:'4-team adoption · 30% velocity gain · Active mentorship',
+  },
+];
+
+const CERTS = [
+  {ic:'01', title:'AWS Certified Solutions Architect', sub:'Associate · Amazon Web Services'},
+  {ic:'02', title:'AWS Certified Developer', sub:'Associate · Amazon Web Services'},
+  {ic:'03', title:'AWS Certified Cloud Practitioner', sub:'Foundational · Amazon Web Services'},
+];
+
+const MQ_ITEMS = [
+  'Java 17','Spring Boot','Spring Cloud','AWS Lambda','Amazon ECS','Kubernetes','Terraform','Apache Kafka',
+  'DynamoDB','HashiCorp Vault','Docker','GitHub Actions','ArgoCD','Datadog','Prometheus','Spring Security',
+  'OAuth2 / JWT','GraphQL','Microservices','CQRS','Event-Driven Architecture','Hexagonal Architecture',
+  'TDD / BDD','AWS CDK','ElastiCache','SageMaker','CloudFront','Redis','PostgreSQL','Grafana','ELK Stack',
+  'Kafka Streams','Outbox Pattern','Saga Pattern','OpenAPI 3.0','Zero Trust Security','DevSecOps'
+];
+
+// ═══════════════════ RENDER ══════════════════════════════════════════════
+
+// Marquee
+const mq = document.getElementById('mq');
+[...MQ_ITEMS,...MQ_ITEMS].forEach(t => {
+  const s = document.createElement('span'); s.className='mq-item'; s.textContent=t; mq.appendChild(s);
+});
+
+// Skills
+const sg = document.getElementById('skills-grid');
+SKILLS.forEach(cat => {
+  const d = document.createElement('div'); d.className='sk-cat';
+  d.innerHTML=`<div class="sk-icon">${cat.icon}</div><div class="sk-name">${cat.name}</div>
+  <div class="tags">${cat.tags.map(t=>`<span class="tag${cat.h?.includes(t)?' h':''}">${t}</span>`).join('')}</div>`;
+  sg.appendChild(d);
+});
+
+// Timeline
+const tl = document.getElementById('timeline');
+EXPERIENCE.forEach(exp => {
+  const el = document.createElement('div'); el.className='tlitem';
+
+  const chainHTML = exp.flow.chain.map(n =>
+    n==='→' ? `<span class="fc-arrow">→</span>` : `<span class="fc-node">${n}</span>`
+  ).join('');
+
+  el.innerHTML = `
+    <div class="tldot" style="background:${exp.color};box-shadow:0 0 10px ${exp.color}"></div>
+    <div class="tlhead">
+      <div>
+        <div class="tlrole">${exp.role}</div>
+        <span class="tlco" style="color:${exp.color};border:1px solid ${exp.chipBorder || exp.color+'44'};background:${exp.chipColor || exp.color+'15'}">${exp.company}</span>
+        <span style="font-size:.72rem;color:var(--muted);margin-left:.5rem">${exp.domain}</span>
+      </div>
+      <span class="tldate">${exp.date}</span>
+    </div>
+    <div class="tl-flow">
+      <div class="tl-flow-title">${exp.flow.title}</div>
+      <div class="tl-flow-chain">${chainHTML}</div>
+    </div>
+    <ul class="tlbullets">${exp.bullets.map(b=>`<li style="color:var(--muted)">${b}</li>`).join('')}</ul>
+    <div class="tlchips">${exp.chips.map(c=>`<span class="chip" style="color:${exp.color};background:${exp.chipColor};border-color:${exp.chipBorder}">${c}</span>`).join('')}</div>
+  `;
+  tl.appendChild(el);
+});
+
+// Why Hire Me
+const wg = document.getElementById('whyhire-grid');
+WHYHIRE.forEach(w => {
+  const el = document.createElement('div');
+  el.className = 'wh-card';
+  el.style.setProperty('--wh-color', w.color);
+  el.innerHTML = `
+    <div class="wh-num" style="color:${w.color}">${w.num}</div>
+    <div class="wh-title">${w.title}</div>
+    <div class="wh-body">${w.body}</div>
+    <div class="wh-proof">${w.proof}</div>`;
+  wg.appendChild(el);
+});
+
+// Achievements
+const ag = document.getElementById('ach-grid');
+ACHIEVEMENTS.forEach(a => {
+  const c = document.createElement('div'); c.className='ach-card';
+  c.innerHTML=`<div class="ach-num">${a.num}</div><div class="ach-lbl">${a.lbl}</div><div class="ach-desc">${a.desc}</div>`;
+  ag.appendChild(c);
+});
+
+// Certs
+const cr = document.getElementById('certs-row');
+CERTS.forEach(c => {
+  const el = document.createElement('div'); el.className='cert-card';
+  el.innerHTML=`<div class="cert-ic">${c.ic}</div><div><div class="cert-title">${c.title}</div><div class="cert-sub">${c.sub}</div></div>`;
+  cr.appendChild(el);
+});
+
+// ═══════════════════ PARTICLES ═══════════════════════════════════════════
+(function(){
+  const cv=document.getElementById('particles-canvas'),ctx=cv.getContext('2d');
+  let W,H,pts=[];
+  const N=90;
+  const resize=()=>{W=cv.width=cv.offsetWidth;H=cv.height=cv.offsetHeight};
+  window.addEventListener('resize',resize); resize();
+  class P{
+    constructor(){this.reset()}
+    reset(){this.x=Math.random()*W;this.y=Math.random()*H;this.vx=(Math.random()-.5)*.35;this.vy=(Math.random()-.5)*.35;this.r=Math.random()*1.4+.4;this.a=Math.random()*.35+.08}
+    upd(){this.x+=this.vx;this.y+=this.vy;if(this.x<0||this.x>W||this.y<0||this.y>H)this.reset()}
+    draw(){ctx.beginPath();ctx.arc(this.x,this.y,this.r,0,Math.PI*2);ctx.fillStyle=`rgba(10,132,255,${this.a})`;ctx.fill()}
+  }
+  for(let i=0;i<N;i++)pts.push(new P());
+  function frame(){
+    ctx.clearRect(0,0,W,H);
+    for(let i=0;i<pts.length;i++){
+      pts[i].upd();pts[i].draw();
+      for(let j=i+1;j<pts.length;j++){
+        const dx=pts[i].x-pts[j].x,dy=pts[i].y-pts[j].y,d=Math.sqrt(dx*dx+dy*dy);
+        if(d<130){ctx.beginPath();ctx.moveTo(pts[i].x,pts[i].y);ctx.lineTo(pts[j].x,pts[j].y);ctx.strokeStyle=`rgba(10,132,255,${.07*(1-d/130)})`;ctx.lineWidth=.5;ctx.stroke()}
+      }
+    }
+    requestAnimationFrame(frame);
+  }
+  frame();
+})();
+
+// ═══════════════════ GSAP ANIMATIONS ════════════════════════════════════
+window.addEventListener('load',()=>{
+  gsap.registerPlugin(ScrollTrigger);
+
+  // Hero entrance
+  gsap.timeline()
+    .to('.hero-chip',  {opacity:1,y:0,duration:.55,ease:'power2.out'},.35)
+    .to('.hero-name',  {opacity:1,y:0,duration:.85,ease:'power3.out'},.55)
+    .to('.hero-title', {opacity:1,y:0,duration:.65,ease:'power2.out'},.82)
+    .to('.hero-pills', {opacity:1,duration:.5},.98)
+    .to('.hero-cta',   {opacity:1,y:0,duration:.6,ease:'power2.out'},1.08)
+    .to('.scroll-cue', {opacity:1,duration:.5},1.5);
+
+  // Generic reveal
+  gsap.utils.toArray('.reveal').forEach(el=>{
+    gsap.to(el,{opacity:1,y:0,duration:.7,ease:'power3.out',
+      scrollTrigger:{trigger:el,start:'top 88%',toggleActions:'play none none reverse'}});
+  });
+
+  // Timeline items
+  gsap.utils.toArray('.tlitem').forEach((el,i)=>{
+    gsap.to(el,{opacity:1,x:0,duration:.65,ease:'power3.out',
+      delay:i*.04,
+      scrollTrigger:{trigger:el,start:'top 87%',toggleActions:'play none none reverse'}});
+  });
+
+  // Why Hire Me cards
+  gsap.utils.toArray('.wh-card').forEach((el,i)=>{
+    gsap.to(el,{opacity:1,y:0,duration:.65,ease:'power3.out',
+      delay:(i%2)*.1,
+      scrollTrigger:{trigger:el,start:'top 88%',toggleActions:'play none none reverse'}});
+  });
+
+  // Achievement cards
+  gsap.utils.toArray('.ach-card').forEach((el,i)=>{
+    gsap.to(el,{opacity:1,y:0,duration:.6,ease:'power3.out',
+      delay:i*.07,
+      scrollTrigger:{trigger:el,start:'top 90%',toggleActions:'play none none reverse'}});
+  });
+
+  // Cert cards
+  gsap.utils.toArray('.cert-card').forEach((el,i)=>{
+    gsap.to(el,{opacity:1,scale:1,duration:.55,ease:'back.out(1.5)',
+      delay:i*.1,
+      scrollTrigger:{trigger:el,start:'top 89%',toggleActions:'play none none reverse'}});
+  });
+
+  // Contact box
+  gsap.to('.contact-box',{opacity:1,y:0,duration:.7,ease:'power3.out',
+    scrollTrigger:{trigger:'.contact-box',start:'top 86%'}});
+
+  // Stats counters
+  gsap.utils.toArray('.stat-num').forEach(el=>{
+    const to=parseInt(el.dataset.to), sfx=el.dataset.sfx||'+';
+    ScrollTrigger.create({trigger:el,start:'top 85%',once:true,
+      onEnter:()=>gsap.to({v:0},{v:to,duration:1.6,ease:'power1.inOut',
+        onUpdate:function(){el.textContent=Math.round(this.targets()[0].v)+sfx}})
+    });
+  });
+
+  // Skill categories stagger
+  gsap.utils.toArray('.sk-cat').forEach((el,i)=>{
+    gsap.from(el,{opacity:0,y:20,duration:.5,ease:'power2.out',
+      delay:i*.03,
+      scrollTrigger:{trigger:'#skills-grid',start:'top 85%',once:true}});
+  });
+});
+</script>
+</body>
+</html>
